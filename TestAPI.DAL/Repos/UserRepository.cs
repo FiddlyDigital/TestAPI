@@ -18,7 +18,7 @@ namespace TestAPI.DAL.Repos
         {
             try
             {
-                return await dbSet.ToListAsync();
+                return await _dbSet.Where(x => x.IsActive).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -31,9 +31,10 @@ namespace TestAPI.DAL.Repos
         {
             try
             {
-                var existingUser = await dbSet.Where(x => x.Id == entity.Id).FirstOrDefaultAsync();
+                var existingUser = await _dbSet.Where(x => x.Id == entity.Id).FirstOrDefaultAsync();
 
-                if (existingUser == null){
+                if (existingUser == null)
+                {
                     return await Add(entity);
                 }
 
@@ -54,13 +55,14 @@ namespace TestAPI.DAL.Repos
         {
             try
             {
-                var exist = await dbSet.Where(x => x.Id == id).FirstOrDefaultAsync();
+                var exist = await _dbSet.Where(x => x.Id == id).FirstOrDefaultAsync();
 
-                if (exist == null) {
+                if (exist == null)
+                {
                     return false;
                 }
 
-                dbSet.Remove(exist);
+                _dbSet.Remove(exist);
                 return true;
             }
             catch (Exception ex)

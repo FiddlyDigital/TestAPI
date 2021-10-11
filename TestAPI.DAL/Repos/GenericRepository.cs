@@ -12,27 +12,27 @@ namespace TestAPI.DAL.Repos
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        protected ApplicationDbContext context;
-        internal DbSet<T> dbSet;
+        protected ApplicationDbContext _context;
+        internal DbSet<T> _dbSet;
         public readonly ILogger _logger;
 
         public GenericRepository(
             ApplicationDbContext context,
             ILogger logger)
         {
-            this.context = context;
-            this.dbSet = context.Set<T>();
+            _context = context;
+            _dbSet = context.Set<T>();
             _logger = logger;
         }
 
         public virtual async Task<T> GetById(Guid id)
         {
-            return await dbSet.FindAsync(id);
+            return await _dbSet.FindAsync(id);
         }
 
         public virtual async Task<bool> Add(T entity)
         {
-            await dbSet.AddAsync(entity);
+            await _dbSet.AddAsync(entity);
             return true;
         }
 
@@ -41,14 +41,14 @@ namespace TestAPI.DAL.Repos
             throw new NotImplementedException();
         }
 
-        public virtual Task<IEnumerable<T>> All()
+        public virtual async Task<IEnumerable<T>> All()
         {
-            throw new NotImplementedException();
+            return await _dbSet.ToListAsync();
         }
 
         public async Task<IEnumerable<T>> Find(Expression<Func<T, bool>> predicate)
         {
-            return await dbSet.Where(predicate).ToListAsync();
+            return await _dbSet.Where(predicate).ToListAsync();
         }
 
         public virtual Task<bool> Upsert(T entity)

@@ -5,22 +5,14 @@ using Microsoft.Extensions.Logging;
 using TestAPI.DAL.Configuration;
 using TestAPI.DAL.Models;
 
-namespace TestAPI.Controllers
+namespace TestAPI.Controllers.v1
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class UsersController : ControllerBase
+    public class UsersController : BaseController
     {
-        private readonly ILogger<UsersController> _logger;
-        private readonly IUnitOfWork _unitOfWork;
-
         public UsersController(
             ILogger<UsersController> logger,
-            IUnitOfWork unitOfWork)
-        {
-            _logger = logger;
-            _unitOfWork = unitOfWork;
-        }
+            IUnitOfWork unitOfWork) : base(logger, unitOfWork)
+        { }
 
         [HttpGet]
         public async Task<IActionResult> Get()
@@ -52,7 +44,7 @@ namespace TestAPI.Controllers
                 await _unitOfWork.Users.Add(user);
                 await _unitOfWork.CompleteAsync();
 
-                return CreatedAtAction("GetItem", new { user.Id }, user);
+                return CreatedAtRoute("GetUser", new { user.Id }, user);
             }
 
             return new JsonResult("Somethign Went wrong") { StatusCode = 500 };

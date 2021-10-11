@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +31,13 @@ namespace TestAPI
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TestAPI", Version = "v1" });
+            });
+
+            services.AddApiVersioning(opt => {
+                // Provide client the diff API Versions available
+                opt.ReportApiVersions = true;                 
+                opt.AssumeDefaultVersionWhenUnspecified = true;
+                opt.DefaultApiVersion = ApiVersion.Default;
             });
 
             services.AddDatabaseDeveloperPageExceptionFilter();
