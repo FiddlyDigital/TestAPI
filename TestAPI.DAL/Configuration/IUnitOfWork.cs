@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
-using TestAPI.Repos.Interfaces;
+using TestAPI.DAL.Repos.Interfaces;
 
-namespace TestAPI.Configuration
+namespace TestAPI.DAL.Configuration
 {
     public interface IUnitOfWork
     {

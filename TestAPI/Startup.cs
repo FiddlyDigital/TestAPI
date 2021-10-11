@@ -5,8 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using TestAPI.Data;
-using TestAPI.Configuration;
+using TestAPI.DAL.Configuration;
+using TestAPI.DAL.Data;
 
 namespace TestAPI
 {

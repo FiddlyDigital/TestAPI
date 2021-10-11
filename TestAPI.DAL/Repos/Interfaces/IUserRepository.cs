@@ -1,6 +1,6 @@
-using TestAPI.Models;
+using TestAPI.DAL.Models;
 
-namespace TestAPI.Repos.Interfaces
+namespace TestAPI.DAL.Repos.Interfaces
 {
     public interface IUserRepository : IGenericRepository<User>
     {

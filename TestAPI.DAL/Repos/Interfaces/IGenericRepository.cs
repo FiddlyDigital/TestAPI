@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace TestAPI.Repos.Interfaces
+namespace TestAPI.DAL.Repos.Interfaces
 {
     public interface IGenericRepository<T> where T : class
     {

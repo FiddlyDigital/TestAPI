@@ -2,8 +2,8 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using TestAPI.Configuration;
-using TestAPI.Models;
+using TestAPI.DAL.Configuration;
+using TestAPI.DAL.Models;
 
 namespace TestAPI.Controllers
 {

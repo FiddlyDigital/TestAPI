@@ -5,10 +5,10 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using TestAPI.Data;
-using TestAPI.Repos.Interfaces;
+using TestAPI.DAL.Data;
+using TestAPI.DAL.Repos.Interfaces;
 
-namespace TestAPI.Repos
+namespace TestAPI.DAL.Repos
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {

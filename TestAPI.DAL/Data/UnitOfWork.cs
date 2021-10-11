@@ -1,11 +1,11 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using TestAPI.Configuration;
-using TestAPI.Repos;
-using TestAPI.Repos.Interfaces;
+using TestAPI.DAL.Configuration;
+using TestAPI.DAL.Repos;
+using TestAPI.DAL.Repos.Interfaces;
 
-namespace TestAPI.Data
+namespace TestAPI.DAL.Data
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
     {

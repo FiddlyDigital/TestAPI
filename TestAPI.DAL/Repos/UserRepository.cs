@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using TestAPI.Data;
-using TestAPI.Models;
-using TestAPI.Repos.Interfaces;
+using TestAPI.DAL.Data;
+using TestAPI.DAL.Models;
+using TestAPI.DAL.Repos.Interfaces;
 
-namespace TestAPI.Repos
+namespace TestAPI.DAL.Repos
 {
     public class UserRepository : GenericRepository<User>, IUserRepository
     {
