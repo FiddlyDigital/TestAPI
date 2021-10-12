@@ -4,6 +4,8 @@
 
 - .Net5 Web API
 - Unit of Work / Reposititory Pattern for Data Access
+- API Versioning
+- JWT Authentication/Authorisation
 
 ## Get going
 
@@ -11,8 +13,6 @@
 Build:```dotnet build```
 
 Run: ```dotnet run```
-
-Swagger doc: ```https://localhost:5001/swagger/v1/swagger.json```
 
 ### Migrations
 
@@ -25,3 +25,6 @@ Same with dierct DB Updates:
 ## Sources
 
 - https://dev.to/moe23/step-by-step-repository-pattern-and-unit-of-work-with-asp-net-core-5-3l92
+- https://www.youtube.com/watch?v=2UlQMx3DuV0
+- https://www.youtube.com/watch?v=uSNqKQEtRdw
+- https://www.youtube.com/watch?v=oWPiBHh3eNc

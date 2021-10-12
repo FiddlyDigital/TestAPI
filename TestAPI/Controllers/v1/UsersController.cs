@@ -47,7 +47,7 @@ namespace TestAPI.Controllers.v1
                 return CreatedAtRoute("GetUser", new { user.Id }, user);
             }
 
-            return new JsonResult("Somethign Went wrong") { StatusCode = 500 };
+            return new JsonResult("Something Went wrong") { StatusCode = 500 };
         }
 
         [HttpPut("{id}")]

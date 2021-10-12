@@ -1,11 +1,16 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
+using TestAPI.Authentication.Configuration;
 using TestAPI.DAL.Configuration;
 using TestAPI.DAL.Data;
 
@@ -23,25 +28,9 @@ namespace TestAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options => 
-                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"))
-            );
-            
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "TestAPI", Version = "v1" });
-            });
-
-            services.AddApiVersioning(opt => {
-                // Provide client the diff API Versions available
-                opt.ReportApiVersions = true;                 
-                opt.AssumeDefaultVersionWhenUnspecified = true;
-                opt.DefaultApiVersion = ApiVersion.Default;
-            });
-
-            services.AddDatabaseDeveloperPageExceptionFilter();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            ConfigureDAL(services);
+            ConfigureAPIServices(services);
+            ConfigureAuthenticationServices(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,12 +47,72 @@ namespace TestAPI
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private void ConfigureDAL(IServiceCollection services)
+        {
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"))
+            );
+
+            services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+        }
+
+        private void ConfigureAPIServices(IServiceCollection services)
+        {
+            services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "TestAPI", Version = "v1" });
+            });
+
+            services.AddApiVersioning(options =>
+            {
+                // Provide client the diff API Versions available
+                options.ReportApiVersions = true;
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.DefaultApiVersion = ApiVersion.Default;
+            });
+        }
+
+        private void ConfigureAuthenticationServices(IServiceCollection services)
+        {
+            services.Configure<JwtConfig>(Configuration.GetSection("JwtConfig"));
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(jwt =>
+            {
+                var key = Encoding.ASCII.GetBytes(Configuration["JwtConfig:Secret"]);
+                jwt.SaveToken = true;
+                jwt.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,         // TODO: update
+                    ValidateAudience = false,       // TODO: update
+                    RequireExpirationTime = false,  // TODO: update
+                    ValidateLifetime = true,
+                };
+            });
+
+            services.AddDefaultIdentity<IdentityUser>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = true;
+            })
+            .AddEntityFrameworkStores<ApplicationDbContext>();
         }
     }
 }
