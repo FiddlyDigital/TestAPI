@@ -11,6 +11,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using TestAPI.Authentication.Configuration;
+using TestAPI.Authentication.Services;
+using TestAPI.Authentication.Services.Interfaces;
 using TestAPI.DAL.Configuration;
 using TestAPI.DAL.Data;
 
@@ -113,6 +115,8 @@ namespace TestAPI
                 options.SignIn.RequireConfirmedAccount = true;
             })
             .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
         }
     }
 }
