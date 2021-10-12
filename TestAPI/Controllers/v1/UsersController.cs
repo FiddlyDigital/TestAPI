@@ -1,5 +1,7 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TestAPI.DAL.Configuration;
@@ -7,8 +9,9 @@ using TestAPI.DAL.Models;
 
 namespace TestAPI.Controllers.v1
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UsersController : BaseController
-    {
+    {        
         public UsersController(
             ILogger<UsersController> logger,
             IUnitOfWork unitOfWork) : base(logger, unitOfWork)
