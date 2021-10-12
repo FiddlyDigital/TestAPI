@@ -45,6 +45,25 @@ namespace TestAPI.Controllers.v1
             });
         }
 
+        [HttpPost]
+        [Route("Login")]
+        public async Task<IActionResult> Login([FromBody] UserLoginRequest loginDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                var loginResponse = await _authService.Login(loginDTO);
+
+                if (!loginResponse.Success)
+                {
+                    return BadRequest(loginResponse);
+                }
+
+                return Ok(loginResponse);
+            }
+
+            return BadRequest();
+        }
+
         //public async Task<IActionResult> ConfirmEmail([FromBody]
     }
 }

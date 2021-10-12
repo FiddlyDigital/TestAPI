@@ -11,5 +11,6 @@ namespace TestAPI.Authentication.Services.Interfaces
     public interface IAuthenticationService
     {
         Task<UserRegistrationResponse> Register(UserRegistrationRequest registrationDTO);
+        Task<UserLoginResponse> Login(UserLoginRequest loginDTO);
     }
 }

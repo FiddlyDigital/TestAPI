@@ -80,7 +80,39 @@ namespace TestAPI.Authentication.Services
             string token = GenerateJwtToken(newUser);
 
             response.Success = true;
-            response.Token = token;          
+            response.Token = token;
+            return response;
+        }
+
+        public async Task<UserLoginResponse> Login(UserLoginRequest loginDTO)
+        {
+            var response = new UserLoginResponse();
+
+            // Check the user exists
+            var existingUser = await _userManager.FindByEmailAsync(loginDTO.Email);
+            if (existingUser == null)
+            {
+                response.Success = false;
+                response.Errors = new List<string> {
+                    "Invalid authentication request",
+                };
+                return response;
+            }
+
+            // check password is correct
+            var isCorrect = await _userManager.CheckPasswordAsync(existingUser, loginDTO.Password);
+            if (!isCorrect)
+            {
+                response.Success = false;
+                response.Errors = new List<string> {
+                    "Invalid authentication request",
+                };
+                return response;
+            }
+
+            string token = GenerateJwtToken(existingUser);
+            response.Success = true;
+            response.Token = token;
             return response;
         }
 
